@@ -415,22 +415,22 @@
 
     ```javascript
     var luke = {
-      jedi: true,
+      isJedi: true,
       age: 28
     };
 
     // bad
-    var isJedi = luke['jedi'];
+    var isJedi = luke['isJedi'];
 
     // good
-    var isJedi = luke.jedi;
+    var isJedi = luke.isJedi;
     ```
 
   - Use subscript notation `[]` when accessing properties with a variable.
 
     ```javascript
     var luke = {
-      jedi: true,
+      isJedi: true,
       age: 28
     };
 
@@ -438,7 +438,7 @@
       return luke[prop];
     }
 
-    var isJedi = getProp('jedi');
+    var isJedi = getProp('isJedi');
     ```
 
 **[⬆ back to top](#table-of-contents)**
