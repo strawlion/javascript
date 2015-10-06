@@ -33,7 +33,7 @@
 ## Types
 
   - **Primitives**: When you access a primitive type you work directly on its value.
-
+  
     + `string`
     + `number`
     + `boolean`
@@ -226,25 +226,6 @@
     var fullName = 'Bob ' + this.lastName;
     ```
 
-  - Strings longer than 100 characters should be written across multiple lines using string concatenation.
-  - Note: If overused, long strings with concatenation could impact performance. [jsPerf](http://jsperf.com/ya-string-concat) & [Discussion](https://github.com/airbnb/javascript/issues/40).
-
-    ```javascript
-    // bad
-    var errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
-
-    // bad
-    var errorMessage = 'This is a super long error that was thrown because \
-    of Batman. When you stop to think about how Batman had anything to do \
-    with this, you would get nowhere \
-    fast.';
-
-    // good
-    var errorMessage = 'This is a super long error that was thrown because ' +
-      'of Batman. When you stop to think about how Batman had anything to do ' +
-      'with this, you would get nowhere fast.';
-    ```
-
   - When programmatically building up a string, use Array#join instead of string concatenation. Mostly for IE: [jsPerf](http://jsperf.com/string-vs-array-concat/2).
 
     ```javascript
@@ -313,6 +294,15 @@
       console.log('Welcome to the Internet. Please follow me.');
     })();
     ```
+    
+  - Function declarations:
+  
+    ```javascript
+    function name() {
+      return true;
+    }
+    ```
+    
 
   - Never declare a function in a non-function block (if, while, etc). Browsers will allow you to do it, but they all interpret it differently, which is bad news bears.
   Declare the function at the bottom of the first valid containing block, or use a function expression if micro optimization is necessary.
@@ -345,9 +335,11 @@
     }
     ```
     
-  - Declare inner functions below the return value. The high level logic should be
-  up front and clear. The reader can be sure there are no side effects occurring between
-  the start of the function and the return value.
+  - Declare inner functions below the return value. 
+  
+   > Why? The high level logic for a given function should be up front and clear.
+   The implementation details of individual steps are not important unless there is an 
+   issue with the parent function, in which case the user can "opt in" to reading them.
   
     ```javascript
     // bad
@@ -398,11 +390,6 @@
     doSomething.then(logResult);
     ```
     
-  - Only declare an inner function if it makes use of the closure scope.
-
-    ```javascript
-    TODO
-    ```
 
   - Never name a parameter `arguments`. This will take precedence over the `arguments` object that is given to every function scope.
 
@@ -557,7 +544,6 @@
       //..other stuff..
 
       var name = getName();
-
       if (name === 'test') {
         return false;
       }
@@ -760,6 +746,9 @@
     if (test) {
       return false;
     }
+    
+    // good
+    if (test) { return false; }
     ```
 
   - If you're using multi-line blocks with `if` and `else`, put `else` on the next line from the
@@ -817,21 +806,21 @@
     }
     ```
 
-  - Prefixing your comments with `FIXME` or `TODO` helps other developers quickly understand if you're pointing out a problem that needs to be revisited, or if you're suggesting a solution to the problem that needs to be implemented. These are different than regular comments because they are actionable. The actions are `FIXME -- need to figure this out` or `TODO -- need to implement`.
+  - Prefixing your comments with `TODO` helps other developers quickly understand if you're pointing out a problem that needs to be revisited, or if you're suggesting a solution to the problem that needs to be implemented. These are different than regular comments because they are actionable. The action is `TODO -- need to implement or fix something`.
 
-  - Use `// FIXME:` to annotate problems.
+  - Use `// TODO:` to annotate problems.
 
     ```javascript
     function Calculator() {
 
-      // FIXME: shouldn't use a global here
+      // TODO: shouldn't use a global here
       total = 0;
 
       return this;
     }
     ```
 
-  - Use `// TODO:` to annotate solutions to problems.
+  - Or to annotate solutions to problems.
 
     ```javascript
     function Calculator() {
@@ -939,9 +928,7 @@
     ```
 
   - Use indentation when making long method chains. Use a leading dot, which
-    emphasizes that the line is a method call, not a new statement. When used 
-    in a variable assignment, align chained methods to the righthand side of the
-    assignment operator (=)
+    emphasizes that the line is a method call, not a new statement.
 
     ```javascript
     // bad
@@ -962,16 +949,23 @@
         .end()
       .find('.open')
         .updateCount();
-
+    ```
+   
+  - When used in a variable assignment, align chained methods to the righthand side of the assignment operator (=)
+    
+    > Why? The high level logic for a given function should be easily decipherable. 
+    The variable name should describe the method chain's intended output. As such, these 
+    implementation details are generally not useful for a high level understanding, 
+    and should be "opt-in".
+    
+    ```javascript
     // bad
-    var leds = stage.selectAll('.led').data(data).enter().append('svg:svg').classed('led', true)
-                    .attr('width', (radius + margin) * 2).append('svg:g')
-                    .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
-                    .call(tron.led);
-                    
-    // bad
-    var leds = stage.selectAll('.led').data(data).enter().append('svg:svg').classed('led', true)
-      .attr('width', (radius + margin) * 2).append('svg:g')
+    var leds = stage.selectAll('.led')
+      .data(data)
+    .enter().append('svg:svg')
+      .classed('led', true)
+      .attr('width', (radius + margin) * 2)
+    .append('svg:g')
       .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
       .call(tron.led);
 
@@ -1136,22 +1130,26 @@
 
   - Avoid single letter names. Your names should accurately describe the 
     underlying behavior without expecting the reader to make inferences
-    from context.
+    from context (within reason).
 
+    > Why? The more inferences that are expected of the reader the more they
+    have to keep in (their) memory, which can lead to error prone code. It
+    also makes the author's intent clear, making bugs easier to spot.
+    
     ```javascript
     // bad
     function f(number) {
       return number < 5;
     }
 
-    // bad
+    // bad - what is the error here?
     function isValid(number) {
-      return number < 5;
+      return number < 4;
     }
     
-    // good
+    // good - The error here is obvious
     function isLessThan5(number) {
-      return number < 5;
+      return number < 4;
     }
     
     // bad
@@ -1159,6 +1157,7 @@
     
     // good
     var validNumbers = numbers.filter(isLessThan5);
+    
     ```
 
   - Sometimes behavior cannot be fully expressed through naming
@@ -1231,7 +1230,11 @@
     });
     ```
     
-  - Array names should always be plural. 
+  - Array names should always be plural.
+  
+  > Why? We should make it easy for the reader to infer the type of a variable
+  from its name. Using the plural form reads more naturally than suffixing with 
+  something like "List"
 
     ```javascript
     // bad
@@ -1247,6 +1250,9 @@
   - Objects used like maps should follow the convention `keyToValue`. An exception can be made for cases
   where the name would otherwise be prohibitively long.
 
+  > Why? The reader does not have to reference the object's instantation logic to understand how to use it.
+  It also provides for an easy way to differentiate from arrays.
+  
     ```javascript
     // bad
     var users = {
@@ -1300,6 +1306,10 @@
 
   - Name your functions. This is helpful for stack traces. Prefer function declarations over 
   function expressions.
+  
+  > Why? If we can accurately express the function's behavior through its name, the reader does
+  not have to reference its implementation. When an error exists within a given function, it 
+  becomes easy to isolate the steps that could be causing issues.
 
     ```javascript
     // bad
@@ -1318,10 +1328,12 @@
     }
     ```
     
-  - Function names should be verbs. This makes them easier to distinguish and 
-  removes ambiguity about their behavior. The consumer should not have to
-  reference the implementation to understand its behavior. An exception can be 
-  made for patterns where getter/setter hybrids are prominent.
+  - Function names should be verbs. An exception can be made for patterns where 
+  getter/setter hybrids are prominent.
+  
+  > Why? This makes them easy to distinguish and removes ambiguity about their behavior. 
+  The consumer should only have to reference the implementation as a last resort. 
+  
   
   ```javascript
     // bad
@@ -1347,6 +1359,9 @@
 
   - Use appropriately named function declarations for any non trivial logic.
   
+    > Why? The reader can immediately grasp the high level flow, and intention thereof,
+    of a given function.
+    
     ```javascript
     // bad
     messages.filter(function(message) {
@@ -1392,7 +1407,13 @@
 
 ## Constructors
 
-  - Prefer object creation functions over "newable" constructor functions.
+  - Prefer object creation functions over "newable" constructors. 
+  
+    > Why? In the majority of cases an object's "lifetime" is rather short. 
+    Unless used on a large scale, the overhead of "class" declaration often 
+    detracts, rather than contributes to understanding of code.
+    The use of `this` generally makes code more difficult to comprehend and 
+    can lead to surpsises when used improperly.
 
     ```javascript
     // bad
@@ -1579,8 +1600,8 @@
   Tests not only allow us to make enhancements worry free, but act as documentation to someone unfamiliar 
   with the code.
   
-  - If a bug is encountered in production for one of these caes, a new test should be written to cover that 
-  case. We should never make the same mistake twice.
+  - If a bug is encountered in production for one of these cases, a new test should be written to cover that 
+  issue. We should not make the same mistake twice.
 
 **[⬆ back to top](#table-of-contents)**
 
