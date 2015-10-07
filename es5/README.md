@@ -34,10 +34,10 @@
 
 ## Philosophy
 
-Code is read more often than it's written, so we should optimize for this case. Your code should be "self commenting".
-When looking at any given piece of code, the intention and basic flow should be clear to the reader without having to 
-reference imperative implementation details. Sometimes this means a bit more work when writing the initial code, 
-but pays off in dividends when your codebase is easy to comprehend and contribute to. 
+Code is read more often than it's written, so we should optimize for this case. When looking at any given piece of code, 
+the intention and basic flow should be clear to the reader without having to reference imperative implementation details. 
+Essentially, your code should be "self commenting". Sometimes this means a bit more work when writing the initial code, 
+but pays off in dividends when your codebase is easy to comprehend and contribute to.
 
 Some good practices to follow are using descriptive variable names, naming your functions, avoidance of shared state, 
 modular code, and using function declarations over function expressions. However, we should avoid blindly prescribing to 
@@ -318,6 +318,12 @@ any one paradigm. Always apply your own judgment.
     }
     ```
     
+  - Prefer function declarations over function expressions.
+  
+  > Why? Function declarations are the magical tool that allow us to write working pseudo code. 
+  Since they're hoisted, their implementation can be effectively hidden from the user below the 
+  containing function's return value. This leaves only the high level, plain english, logic at 
+  the top.
 
   - Never declare a function in a non-function block (if, while, etc). Browsers will allow you to do it, but they all interpret it differently, which is bad news bears.
   Declare the function at the bottom of the first valid containing block, or use a function expression if micro optimization is necessary.
@@ -1102,26 +1108,6 @@ any one paradigm. Always apply your own judgment.
 
     ```
 
-  - If for whatever reason you are doing something wild and `+` is your bottleneck and need to use Bitshift for [performance reasons](http://jsperf.com/coercion-vs-casting/3), leave a comment explaining why and what you're doing.
-
-    ```javascript
-    // good
-    /**
-     * + was the reason my code was slow.
-     * Bitshifting the String to coerce it to a
-     * Number made it a lot faster.
-     */
-    var val = inputValue >> 0;
-    ```
-
-  - **Note:** Be careful when using bitshift operations. Numbers are represented as [64-bit values](http://es5.github.io/#x4.3.19), but Bitshift operations always return a 32-bit integer ([source](http://es5.github.io/#x11.7)). Bitshift can lead to unexpected behavior for integer values larger than 32 bits. [Discussion](https://github.com/airbnb/javascript/issues/109). Largest signed 32-bit Int is 2,147,483,647:
-
-    ```javascript
-    2147483647 >> 0 //=> 2147483647
-    2147483648 >> 0 //=> -2147483648
-    2147483649 >> 0 //=> -2147483647
-    ```
-
   - Booleans:
 
     ```javascript
@@ -1290,36 +1276,7 @@ any one paradigm. Always apply your own judgment.
      };
     ```
 
-  - When saving a reference to `this` use `self`.
-
-    ```javascript
-    // bad
-    function() {
-      var that = this;
-      return function() {
-        console.log(that);
-      };
-    }
-
-    // bad
-    function() {
-      var _this = this;
-      return function() {
-        console.log(_this);
-      };
-    }
-    
-    // good
-    function() {
-      var self = this;
-      return function() {
-        console.log(self);
-      };
-    }
-    ```
-
-  - Name your functions. This is helpful for stack traces. Prefer function declarations over 
-  function expressions.
+  - Name your functions. This is helpful for stack traces.
   
   > Why? If we can accurately express the function's behavior through its name, the reader does
   not have to reference its implementation. When an error exists within a given function, it 
@@ -1328,11 +1285,6 @@ any one paradigm. Always apply your own judgment.
     ```javascript
     // bad
     var log = function(msg) {
-      console.log(msg);
-    };
-
-    // ok
-    var log = function log(msg) {
       console.log(msg);
     };
     
@@ -1359,16 +1311,6 @@ any one paradigm. Always apply your own judgment.
     function getLastName(person) {
       return person.lastName;
      }
-    
-    // bad
-    function monday() {
-      // ...
-    }
-    
-    // good
-    function isMonday() {
-      // ...
-    }
     ```
 
   - Use appropriately named function declarations for any non trivial logic.
@@ -1424,8 +1366,8 @@ any one paradigm. Always apply your own judgment.
 
   - Prefer to return early from functions.
     
-    > Why? We can make stronger assumptions about our inputs when implementing the function body.
-    Less brace nesting leads to more readable code.
+    > Why? We can make stronger assumptions about our inputs when implementing the meat of the function.
+    Less nesting leads to more readable code.
     
     ```javascript
     // bad
