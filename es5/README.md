@@ -1250,7 +1250,7 @@
   - Objects used like maps should follow the convention `keyToValue`. An exception can be made for cases
   where the name would otherwise be prohibitively long.
 
-  > Why? The reader does not have to reference the object's instantation logic to understand how to use it.
+  > Why? The reader does not have to reference the object's initialization logic to understand how to use it.
   It also provides for an easy way to differentiate from arrays.
   
     ```javascript
@@ -1636,9 +1636,11 @@
 
 **Tools**
 
-  - Code Style Linters
+  <!--- 
+  TODO - Code Style Linters
     + [JSHint](http://www.jshint.com/) - [Airbnb Style .jshintrc](https://github.com/airbnb/javascript/blob/master/linters/jshintrc)
     + [JSCS](https://github.com/jscs-dev/node-jscs) - [Airbnb Style Preset](https://github.com/jscs-dev/node-jscs/blob/master/presets/airbnb.json)
+  -->
 
 **Other Style Guides**
 
