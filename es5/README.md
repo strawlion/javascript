@@ -1133,8 +1133,8 @@
     from context (within reason).
 
     > Why? The more inferences the reader has to keep in (their) memory, 
-    the more likely they are to forget something, which can lead to 
-    errors. Accurate naming also makes bugs easier to spot by providing clear intent.
+    the more likely they are to forget something. This can lead to error prone code.
+    Accurate naming also makes bugs easier to spot by providing clear intent.
     
     ```javascript
     // bad
