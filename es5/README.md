@@ -21,6 +21,7 @@
   1. [Semicolons](#semicolons)
   1. [Type Casting & Coercion](#type-casting--coercion)
   1. [Naming Conventions](#naming-conventions)
+  1. [Control Flow](#control-flow)
   1. [Constructors](#constructors)
   1. [Events](#events)
   1. [Modules](#modules)
@@ -65,6 +66,7 @@
 
 **[⬆ back to top](#table-of-contents)**
 
+
 ## Objects
 
   - Use the literal syntax for object creation.
@@ -78,6 +80,7 @@
     ```
 
 **[⬆ back to top](#table-of-contents)**
+
 
 ## Arrays
 
@@ -408,7 +411,6 @@
 **[⬆ back to top](#table-of-contents)**
 
 
-
 ## Properties
 
   - Use dot notation when accessing properties.
@@ -665,7 +667,6 @@
   - For more information refer to [JavaScript Scoping & Hoisting](http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting) by [Ben Cherry](http://www.adequatelygood.com/).
 
 **[⬆ back to top](#table-of-contents)**
-
 
 
 ## Comparison Operators & Equality
@@ -981,6 +982,7 @@
     ```
 
 **[⬆ back to top](#table-of-contents)**
+
 
 ## Commas
 
@@ -1405,6 +1407,72 @@
 
 **[⬆ back to top](#table-of-contents)**
 
+
+## Control Flow
+
+  - Prefer to return early from functions.
+    
+    > Why? We can make stronger assumptions about our inputs when implementing the function body.
+    Less brace nesting leads to more readable code.
+    
+    ```javascript
+    // bad
+    function doLoopOperation(values) {
+      
+      if (values && values.length) {
+        return values.map(doOperation);
+      }
+      
+      return [];
+    }
+    
+    // good
+    function doLoopOperation(values) {
+     if (!values || !values.length) { return []; }
+     
+     return values.map(doOperation);
+    }
+    ```
+    
+  - Use the ternary operator for simple assignments
+  
+  ```javascript
+  // bad 
+  var someVal;
+  
+  if (someBool) {
+    someVal = 1;
+  }
+  else {
+    someVal = 2;
+  }
+  
+  // good
+  var someVal = someBool ? 1 : 2;
+  ```
+  
+  - Use `||` for conditional assignments
+  
+  ```javascript
+  // good
+  var someVal = someInput || defaultVal;
+  ```
+  
+  - Don't use `&&` in place of `if`
+  
+  ```javascript
+  // bad 
+  doSomething && doSomething();
+  
+  // good
+  if (doSomething) {
+    doSomething();
+  }
+  ```
+
+**[⬆ back to top](#table-of-contents)**
+
+
 ## Constructors
 
   - Prefer object literals or object creation functions over "newable" constructors. 
@@ -1455,6 +1523,7 @@
     ```
 
 **[⬆ back to top](#table-of-contents)**
+
 
 ## Modules
 
