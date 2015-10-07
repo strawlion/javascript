@@ -955,7 +955,7 @@
     
     > Why? The high level logic for a given function should be easily decipherable. 
     The variable name should describe the method chain's intended output. As such, these 
-    implementation details are generally not useful for a high level understanding, 
+    implementation details are generally not useful for this high level understanding, 
     and should be "opt-in".
     
     ```javascript
@@ -1142,7 +1142,7 @@
       return number < 5;
     }
 
-    // bad - what is the error here?
+    // bad - Is there an error here? What is it?
     function isValid(number) {
       return number < 4;
     }
@@ -1407,13 +1407,13 @@
 
 ## Constructors
 
-  - Prefer object creation functions over "newable" constructors. 
+  - Prefer object literals or object creation functions over "newable" constructors. 
   
     > Why? In the majority of cases an object's "lifetime" is rather short. 
     Unless used on a large scale, the overhead of "class" declaration often 
     detracts, rather than contributes to understanding of code.
     The use of `this` generally makes code more difficult to comprehend and 
-    can lead to surpsises when used improperly.
+    can lead to surprises when used improperly.
 
     ```javascript
     // bad
@@ -1427,6 +1427,13 @@
 
     Jedi.prototype.block = function block() {
       console.log('blocking');
+    };
+    
+    // good 
+    var jedi = {
+      someProperty: someProperty,
+      fight: fight,
+      block: block,
     };
     
     // good
