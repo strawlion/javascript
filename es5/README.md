@@ -1132,9 +1132,9 @@
     underlying behavior without expecting the reader to make inferences
     from context (within reason).
 
-    > Why? The more inferences that are expected of the reader the more they
-    have to keep in (their) memory, which can lead to error prone code. It
-    also makes the author's intent clear, making bugs easier to spot.
+    > Why? The more inferences the reader has to keep in (their) memory, 
+    the more likely they are to forget something, which can lead to 
+    errors. Accurate naming also makes bugs easier to spot by providing clear intent.
     
     ```javascript
     // bad
