@@ -5,6 +5,7 @@
 
 ## Table of Contents
 
+  1. [Philosophy](#philosophy)
   1. [Types](#types)
   1. [Objects](#objects)
   1. [Arrays](#arrays)
@@ -30,6 +31,17 @@
   1. [Testing](#testing)
   1. [Performance](#performance)
   1. [Resources](#resources)
+
+## Philosophy
+
+Code is read more often than it's written, so we should optimize for this case. Your code should be "self commenting".
+When looking at any given piece of code, the intention and basic flow should be clear to the reader without having to 
+reference imperative implementation details. Sometimes this means a bit more work when writing the initial code, 
+but pays off in dividends when your codebase is easy to comprehend and contribute to. 
+
+Some good practices to follow are using descriptive variable names, naming your functions, avoidance of shared state, 
+modular code, and using function declarations over function expressions. However, we should avoid blindly prescribing to 
+any one paradigm. Always apply your own judgment.
 
 ## Types
 
